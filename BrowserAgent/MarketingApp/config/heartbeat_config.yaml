@@ -1,0 +1,14 @@
+## Heartbeat - DataMedX clinical demo
+
+enabled: false
+interval_minutes: 5
+
+tasks:
+  - id: startup_clinical_check
+    name: Klinik veri hazırlık kontrolü
+    cron: "startup"
+    gorev: >
+      Sağlık yönetim sistemi başlangıç kontrolünü yap.
+      `csv_schema_oku` ile veri seti özetini doğrula.
+      Aktif klinik ajanları ve kritik tool'ları kontrol et.
+      Bu görevde klinik yorum, tanı veya tedavi önerisi üretme; sadece sistem hazırlık özeti ver.

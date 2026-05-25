@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataMedX Doktor Paneli</title>
+    <link rel="stylesheet" href="/panel/doctor.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark">DX</div>
+                <div>
+                    <p class="eyebrow">DataMedX</p>
+                    <h1>Doktor Paneli</h1>
+                </div>
+            </div>
+
+            <div class="topbar-status">
+                <span id="status-pill" class="status-pill offline">Offline</span>
+                <span id="model-label" class="model-label">Model bekleniyor</span>
+                <a class="control-link" href="/panel">Agent Studio</a>
+            </div>
+        </header>
+
+        <main class="doctor-layout">
+            <section class="input-panel">
+                <div class="panel-heading">
+                    <p class="eyebrow">Klinik İstek</p>
+                    <h2>Doktor Ne İstiyorsa Yazsın</h2>
+                </div>
+
+                <label class="field">
+                    <span>Serbest klinik prompt</span>
+                    <textarea id="doctor-prompt" rows="11" placeholder="Örn: ADN_10016905 hastasını SBAR formatında özetle, kritik riskleri ve kanıtları ayrı yaz."></textarea>
+                </label>
+
+                <div class="button-row">
+                    <button id="send-prompt" class="btn primary" type="button">
+                        <span>Gönder</span>
+                    </button>
+                    <button id="clear-chat" class="btn ghost" type="button">Temizle</button>
+                </div>
+
+                <div class="prompt-note">
+                    Hasta ID, tanı, tedavi, lab veya kohort sorgusunu aynı kutuya yaz. Panel ID'yi metinden otomatik yakalar ve uygun agent ağını çağırır.
+                </div>
+            </section>
+
+            <section class="conversation-panel">
+                <div class="conversation-header">
+                    <div>
+                        <p class="eyebrow">Agent Orkestrasyonu</p>
+                        <h2>Canlı Klinik Cevap</h2>
+                    </div>
+                    <div class="conversation-actions">
+                        <button id="copy-last-answer" class="btn ghost compact" type="button" disabled>Kopyala</button>
+                        <div id="run-state" class="run-state idle">Hazır</div>
+                    </div>
+                </div>
+
+                <div id="message-list" class="message-list" aria-live="polite">
+                    <article class="message assistant">
+                        <div class="message-meta">DataMedX</div>
+                        <div class="message-body">
+                            Direkt klinik isteğini yaz. Hasta ID, tanı, ilaç, lab, metastaz veya kohort sorgusunu aynı prompt içinde kullanabilirsin.
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <aside class="insight-panel">
+                <section class="insight-block">
+                    <div class="panel-heading compact">
+                        <p class="eyebrow">Mimari</p>
+                        <h2>Klinik Agent Ağı</h2>
+                    </div>
+                    <div id="agent-map" class="agent-map"></div>
+                </section>
+
+                <section class="insight-block clinical-workbench">
+                    <div class="panel-heading compact">
+                        <p class="eyebrow">Kanıtlı Yanıt</p>
+                        <h2>Denetim Paneli</h2>
+                    </div>
+                    <div id="patient-chip" class="patient-chip">Hasta ID bekleniyor</div>
+                    <div id="demo-metrics" class="demo-metrics" aria-label="Jüri demo metrikleri">
+                        <div class="metric-card">
+                            <strong>0</strong>
+                            <span>Kanıt</span>
+                        </div>
+                        <div class="metric-card">
+                            <strong>0</strong>
+                            <span>Risk</span>
+                        </div>
+                        <div class="metric-card">
+                            <strong>0</strong>
+                            <span>Timeline</span>
+                        </div>
+                        <div class="metric-card">
+                            <strong>-</strong>
+                            <span>Rapor</span>
+                        </div>
+                    </div>
+                    <div id="impact-strip" class="impact-strip">
+                        <div>
+                            <span>Önce</span>
+                            <strong>Manuel dosya okuma: 10-15 dk</strong>
+                        </div>
+                        <div>
+                            <span>Sonra</span>
+                            <strong>DataMedX: kanıtlı özet, risk ve rapor tek akışta</strong>
+                        </div>
+                    </div>
+                    <div id="data-quality-card" class="data-quality-card empty">
+                        <div class="quality-header">
+                            <span>Veri Kalitesi</span>
+                            <strong>Hasta kaydı bekleniyor</strong>
+                        </div>
+                        <p>Hasta kaydı doğrulanınca uç değer ve tutarsızlık kontrolü yapılır.</p>
+                    </div>
+                    <div class="clinical-tabs" role="tablist" aria-label="Klinik denetim sekmeleri">
+                        <button class="tab-button active" type="button" data-tab="evidence">Kanıt</button>
+                        <button class="tab-button" type="button" data-tab="risk">Risk</button>
+                        <button class="tab-button" type="button" data-tab="timeline">Timeline</button>
+                        <button class="tab-button" type="button" data-tab="report">Rapor</button>
+                    </div>
+                    <div class="clinical-pane active" data-pane="evidence">
+                        <div id="evidence-list" class="evidence-list">
+                            <div class="trace-empty">Hasta ID içeren bir prompt gönderince kanıt satırları burada görünecek.</div>
+                        </div>
+                    </div>
+                    <div class="clinical-pane" data-pane="risk">
+                        <div id="risk-cards" class="risk-cards">
+                            <div class="trace-empty">Risk kartları henüz hazır değil.</div>
+                        </div>
+                    </div>
+                    <div class="clinical-pane" data-pane="timeline">
+                        <div id="timeline-list" class="timeline-list">
+                            <div class="trace-empty">Timeline için hasta kaydı bekleniyor.</div>
+                        </div>
+                    </div>
+                    <div class="clinical-pane" data-pane="report">
+                        <div class="report-actions">
+                            <button id="download-md" class="btn ghost compact" type="button" disabled>Markdown</button>
+                            <button id="download-pdf" class="btn ghost compact" type="button" disabled>PDF</button>
+                        </div>
+                        <pre id="report-preview" class="report-preview">Rapor için hasta ID içeren bir prompt gönder.</pre>
+                    </div>
+                </section>
+
+                <section class="insight-block">
+                    <div class="panel-heading compact">
+                        <p class="eyebrow">İz</p>
+                        <h2>Son Çalışma</h2>
+                    </div>
+                    <div id="trace-list" class="trace-list">
+                        <div class="trace-empty">Henüz çalışma yok.</div>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="/panel/doctor.js"></script>
+</body>
+</html>

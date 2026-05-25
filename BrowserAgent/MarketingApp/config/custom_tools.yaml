@@ -1,0 +1,98 @@
+version: 1
+custom_tools:
+  - name: csv_schema_oku
+    enabled: true
+    description: Hackathon sağlık CSV dosyasının kolonlarını, kayıt sayısını ve temel dağılımlarını döndürür.
+    file: csv_schema_oku.py
+    params_note: "{}"
+    env_vars: []
+  - name: hasta_ara
+    enabled: true
+    description: Hasta ID, tanı, ilaç, işlem veya klinik metin içinde arama yapar.
+    file: hasta_ara.py
+    params_note: '{"sorgu": "ADN_10016905 veya meme karsinomu", "limit": 10}'
+    env_vars: []
+  - name: hasta_kaydi_getir
+    enabled: true
+    description: client_id, id veya No ile tek hastanın özetlenmiş ham klinik kaydını getirir.
+    file: hasta_kaydi_getir.py
+    params_note: '{"client_id": "ADN_10016905", "id": "", "no": "", "max_text_chars": 5000}'
+    env_vars: []
+  - name: hasta_timeline_olustur
+    enabled: true
+    description: Hastanın işlem, reçete, order ve test olaylarından kronolojik zaman çizelgesi oluşturur.
+    file: hasta_timeline_olustur.py
+    params_note: '{"client_id": "ADN_10016905", "limit": 120}'
+    env_vars: []
+  - name: klinik_metin_temizle
+    enabled: true
+    description: Excel satır sonu izleri ve fazla boşlukları temizleyerek klinik metni okunabilir hale getirir.
+    file: klinik_metin_temizle.py
+    params_note: '{"metin": "ham klinik metin", "max_karakter": 4000}'
+    env_vars: []
+  - name: klinik_varlik_cikar
+    enabled: true
+    description: Klinik metinden olası tanı, ECOG, boy/kilo, metastaz sahası ve semptom sinyallerini çıkarır.
+    file: klinik_varlik_cikar.py
+    params_note: '{"client_id": "ADN_10016905", "metin": ""}'
+    env_vars: []
+  - name: lab_sonuclari_parse_et
+    enabled: true
+    description: Lab metinlerini WBC, HGB, PLT, kreatinin, AST/ALT, CRP ve elektrolitler için parse eder.
+    file: lab_sonuclari_parse_et.py
+    params_note: '{"client_id": "ADN_10016905", "metin": ""}'
+    env_vars: []
+  - name: lab_trend_analiz_et
+    enabled: true
+    description: Hastanın parse edilebilen lab sonuçlarını analit bazında tarih sırasıyla gruplar.
+    file: lab_trend_analiz_et.py
+    params_note: '{"client_id": "ADN_10016905", "analit": "HGB"}'
+    env_vars: []
+  - name: ilac_tedavi_ozeti_cikar
+    enabled: true
+    description: Hastanın ilaç, order, kemoterapi ve sistemik tedavi sinyallerini özetler.
+    file: ilac_tedavi_ozeti_cikar.py
+    params_note: '{"client_id": "ADN_10016905"}'
+    env_vars: []
+  - name: patoloji_marker_cikar
+    enabled: true
+    description: Patoloji metninden ER, PR, HER2/CERB2 ve Ki-67 gibi marker sinyallerini çıkarır.
+    file: patoloji_marker_cikar.py
+    params_note: '{"client_id": "ADN_10016905", "metin": ""}'
+    env_vars: []
+  - name: metastaz_bulgusu_ara
+    enabled: true
+    description: Tek hastada veya tüm kohortta metastaz/metastatik hastalık sinyali arar.
+    file: metastaz_bulgusu_ara.py
+    params_note: '{"client_id": "ADN_10016905", "sorgu": "karaciğer", "limit": 20}'
+    env_vars: []
+  - name: kohort_filtrele
+    enabled: true
+    description: Tanı, cinsiyet, metastaz sahası, ilaç veya işlem adına göre hasta kohortu filtreler.
+    file: kohort_filtrele.py
+    params_note: '{"tani": "meme", "cinsiyet": "kadın", "metastaz": "karaciğer", "ilac": "", "islem": "", "limit": 20}'
+    env_vars: []
+  - name: kohort_istatistik_uret
+    enabled: true
+    description: Tüm veri seti için demografi, ölüm tarihi, metastaz sinyali, bölüm, işlem ve ilaç istatistikleri üretir.
+    file: kohort_istatistik_uret.py
+    params_note: "{}"
+    env_vars: []
+  - name: rapor_olustur
+    enabled: true
+    description: Hasta için doktor dostu klinik özet, risk, lab ve SBAR raporu oluşturur.
+    file: rapor_olustur.py
+    params_note: '{"client_id": "ADN_10016905", "format": "sbar"}'
+    env_vars: []
+  - name: cevap_guvenlik_kontrolu
+    enabled: true
+    description: Klinik cevabı kesin tanı/tedavi iddiası, mahremiyet ve doktor doğrulaması açısından kontrol eder.
+    file: cevap_guvenlik_kontrolu.py
+    params_note: '{"cevap": "kontrol edilecek klinik yanıt"}'
+    env_vars: []
+  - name: anonimlestir
+    enabled: true
+    description: Hasta kimliklerini ve belirgin tarihleri rapor paylaşımı için maskeleyen basit anonimleştirme aracı.
+    file: anonimlestir.py
+    params_note: '{"metin": "anonimleştirilecek metin"}'
+    env_vars: []
