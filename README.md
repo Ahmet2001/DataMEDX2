@@ -1,61 +1,61 @@
 # DataMEDX2
 
-Bu depo, onkoloji veri analizi, klinik karar destek ve yapay zeka tabanlı veri işleme araçlarını barındıran kapsamlı bir çalışma alanıdır. Proje iki ana bölümden oluşmaktadır: klinik veri analitiği dosyaları ve bağımsız olarak çalışan yapay zeka otomasyon paneli (`BrowserAgent`).
+This repository is a comprehensive workspace containing oncology data analysis tools, clinical decision support systems, and AI-powered data processing agents. The project consists of two main parts: clinical data analytics files and the independently running AI automation panel (`BrowserAgent`).
 
 ---
 
-## 📂 Proje Yapısı
+## 📂 Project Structure
 
 ```text
 DataMEDX2/
-├── BrowserAgent/              # Yapay zeka otomasyonu ve Ajan Stüdyosu paneli (Bağımsız Proje)
-├── hackathon_veri.csv         # [Yerele Özel] 114MB boyutunda 1.000 hastaya ait ham klinik veri seti (.gitignore altında)
-├── okunabilir_onizleme.csv    # Veriyi hızlıca incelemek için ilk 30 satırdan oluşturulmuş önizleme dosyası
-├── veri_okuma_rehberi.md      # Klinik verinin yapısı, kolonları ve anlamlarına dair detaylı açıklama rehberi
-├── .gitignore                 # GitHub dosya boyutu limitleri ve hassas veriler için yapılandırma
-└── README.md                  # Proje ana dökümantasyonu
+├── BrowserAgent/              # AI Automation & Agent Studio panel (Independent Project)
+├── hackathon_veri.csv         # [Local Only] 114MB raw clinical dataset containing 1,000 patients (under .gitignore)
+├── okunabilir_onizleme.csv    # Lightweight preview containing the first 30 rows of the dataset
+├── veri_okuma_rehberi.md      # Detailed Turkish guide explaining the structure and columns of the clinical data
+├── .gitignore                 # Excludes large files and sensitive credentials from GitHub tracking
+└── README.md                  # Main project documentation (this file)
 ```
 
 ---
 
-## 📊 Klinik Veri Analitiği
+## 📊 Clinical Data Analytics
 
-Proje kök dizininde ham hastane ve klinik epikriz kayıtlarından derlenmiş onkoloji ağırlıklı bir veri seti bulunmaktadır.
+At the root directory, there is an oncology-focused dataset compiled from raw hospital and clinical epicrisis records.
 
-* **`hackathon_veri.csv`**: 1.000 hastanın tüm klinik seyrini (laboratuvar sonuçları, ilaç reçeteleri, patoloji özetleri, muayene notları ve genetik testler) içeren detaylı bir veri setidir. *GitHub'ın 100 MB dosya boyutu limiti nedeniyle bu dosya repoda takip edilmez, sadece yerel çalışma alanınızda barındırılır.*
-* **`okunabilir_onizleme.csv`**: Büyük veri setini yüklemeden hızlıca şema yapısını ve veri formatını anlamanız için oluşturulmuş 30 satırlık hafifletilmiş önizleme dosyasıdır.
-* **`veri_okuma_rehberi.md`**: Klinik verideki kolon gruplarını (kimlik/demografi, klinik zamanlar, yaşam durumu, reçete ve order ilaçları, laboratuvar/genetik sonuçlar) açıklayan ve veriyi NLP/Yapay Zeka modelleriyle işlerken dikkat edilmesi gereken noktaları listeleyen rehberdir.
+* **`hackathon_veri.csv`**: A detailed clinical dataset covering the complete journey of 1,000 patients (lab results, prescriptions, pathology reports, physical examinations, and genetic tests). *Due to GitHub's 100 MB file size limit, this file is ignored in git and kept only in your local workspace.*
+* **`okunabilir_onizleme.csv`**: A 30-row preview dataset designed to help you quickly understand the schema, columns, and data formats without loading the large CSV file.
+* **`veri_okuma_rehberi.md`**: A Turkish reference guide detailing column groups (demographics, timeline, orders/prescriptions, lab tests) and highlighting critical aspects to keep in mind when processing this data with NLP/AI models.
 
 ---
 
-## 🤖 BrowserAgent (Ajan Stüdyosu & Kontrol Paneli)
+## 🤖 BrowserAgent (Agent Studio & Control Panel)
 
-`BrowserAgent` klasörü, LLM'ler ve çeşitli alt modeller (SubModels) yardımıyla çalışan, web otomasyonu, klinik veri analizi, içerik üretimi ve çoklu ajan yönetimi gerçekleştiren bağımsız bir uygulamadır.
+The `BrowserAgent` directory is an independent application that uses LLMs and specialized SubModels to perform web automation, clinical data analysis, content generation, and multi-agent management.
 
-### Özellikleri
-* **Sağlık Verisi Araçları (Health AI):** Klinik metinleri temizleme, kohort filtreleme, laboratuvar trend analizi, ilaç özetleri çıkarma, metastaz bulgusu arama gibi onkoloji verilerine özel geliştirilmiş özel fonksiyonlar.
-* **Ajan Stüdyosu (Agent Studio):** Ajanları görsel bir arayüzden yönetmenizi, yapılandırmanızı ve yeni ajan paketleri üretmenizi sağlayan kontrol paneli.
-* **Sosyal Medya ve İçerik Otomasyonu:** X (Twitter), Instagram ve YouTube için otomatik içerik planlama ve yayınlama mekanizmaları.
-* **Doktor Paneli (Doctor UI):** `qt_doctor_panel.py` ve web arayüzü (`doctor.html`) üzerinden klinik veriler üzerinde sorgulama, zaman çizelgesi oluşturma ve raporlama yapabilen arayüz.
+### Features
+* **Health AI Tools:** Built-in clinical analysis utilities including text cleaning, cohort filtering, laboratory trend analysis, drug summary extraction, and metastasis search.
+* **Agent Studio:** A visual control room UI to manage, configure, and compile custom agent bundles.
+* **Social & Content Automation:** Automated scheduling and posting mechanisms for X (Twitter), Instagram, and YouTube.
+* **Doctor Panel UI:** A Qt-based GUI (`qt_doctor_panel.py`) and a web interface (`doctor.html`) to query clinical records, generate patient timelines, and compile patient reports.
 
-### Çalıştırma Adımları
+### Setup and Running Instructions
 
-`BrowserAgent` altındaki projeyi yerelde çalıştırmak için aşağıdaki adımları uygulayabilirsiniz:
+To run the `BrowserAgent` application locally:
 
-1. **Gereksinimleri Kurun:**
+1. **Install Dependencies:**
    ```bash
    cd BrowserAgent
    chmod +x run.sh
    ./run.sh
    ```
-   *Bu betik otomatik olarak sanal ortamı (`.venv`) kuracak, gerekli Python paketlerini yükleyecek ve uygulamayı başlatacaktır.*
+   *This script automatically creates a virtual environment (`.venv`), installs required dependencies, and boots up the backend panel.*
 
-2. **Paneli Açın:**
-   Uygulama başladıktan sonra tarayıcınızdan şu adrese giderek Ajan Kontrol Odasına ve Stüdyosuna erişebilirsiniz:
+2. **Open the Web Control Panel:**
+   Once the application starts, navigate to the following URL in your web browser:
    * **http://127.0.0.1:8001/panel**
 
-3. **Doktor Panelini Başlatmak İçin:**
-   Klinik veri analizi arayüzünü (Qt tabanlı) açmak isterseniz:
+3. **Launch the Qt Doctor Panel:**
+   If you want to start the desktop clinical analysis interface:
    ```bash
    chmod +x run_qt_doctor.sh
    ./run_qt_doctor.sh
@@ -63,7 +63,7 @@ Proje kök dizininde ham hastane ve klinik epikriz kayıtlarından derlenmiş on
 
 ---
 
-## ⚠️ Önemli Uyarılar
+## ⚠️ Important Notes
 
-1. **Hassas Bilgiler:** `BrowserAgent` altındaki `.env` veya `.env.secrets` gibi dosyalar API anahtarları (Gemini, Telegram vb.) içerebilir. Bu depo **kamuya açık (public)** bir depo olduğu için, güvenlik amacıyla gizli anahtar içeren bu tür dosyalar `.gitignore` kuralları ile engellenmiştir. Yerel çalışmalarınızda `.env.example` dosyasını çoğaltarak kendi anahtarlarınızı eklemelisiniz.
-2. **Kişisel Sağlık Verileri:** Klinik veri setinde bulunan serbest metin alanları hassas hasta bilgileri içerebileceğinden, veri işleme ve model eğitimi süreçlerinde yasal uyumluluklara ve anonimleştirme kurallarına dikkat edilmelidir.
+1. **Sensitive Credentials:** The `.env` or `.env.secrets` files inside the `BrowserAgent` folder contain API keys (Gemini, Telegram, etc.). Because this repository is **public**, these credential files are git-ignored for security. Make a copy of `.env.example`, fill in your own keys, and save it as `.env` to work locally.
+2. **Personal Health Information (PHI):** Since the clinical dataset contains free-text fields with sensitive medical records, ensure strict compliance with data privacy regulations and anonymization standards when processing or training models.
